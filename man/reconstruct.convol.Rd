@@ -26,7 +26,7 @@ function to reconstruct an array from a matrix,
 \examples{
 data <- f.read.image(source='www/rTLC_demopicture.JPG',height=128)
 decon <- data \%>\% deconstruct.convol(margin =3 ,transform = F, conv_width =2 )
-recon <- decon \%>\% reconstruct.convol(margin =3 ,transform = F, conv_width =2)
+recon <- decon \%>\% reconstruct.convol(margin =3 ,transform = F,dimension=dim(data), conv_width =2)
 }
 \author{
 Dimitri Fichou
