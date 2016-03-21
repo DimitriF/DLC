@@ -1,0 +1,14 @@
+Package: DLC
+Type: Package
+Title: Deep Layer Chromatography
+Version: 0.1.1
+Date: 2016-01-07
+Author: Fichou Dimitri
+Maintainer: Fichou Dimitri <dimitrifichou@gmail.com>
+Description: This package provide tool to explore HPTLC picture with artificial
+    intelligence with a focus on unsupervised learning.
+License: GPL
+Depends: jpeg, png, tiff, abind, shiny, shinydashboard, magrittr, kohonen, plyr, markdown, rgl,
+  ChemometricsWithR, RSNNS, tsne
+LazyData: TRUE
+RoxygenNote: 5.0.1

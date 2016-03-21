@@ -1,0 +1,12 @@
+Name	Direction	Algorithm	Stable	Info
+New Color generator	pixels	NA	TRUE	Generate new color by calculating the euclidean distance between a selected pixels and the rest of the plate
+Kohonen Pipeline 1	Pixels & chromato	Kohonen Self Organised Map	TRUE	Generate new colors and classify the chromato with them
+Kohonen Pipeline 2	Pixels	Kohonen Self Organised Map	TRUE	Denoise the pixture with kohonen network
+RBM pipeline 1	chromato	Restricted boltzmann machine and PCA	TRUE	Feature extraction from chromatograms then PCA with it
+RBM pipeline 2	Pixels	Restricted boltzmann machine	TRUE	Pixels denoising without patching, also called convolution some time, possibility to explore the network
+RBM pipeline 3	Pixels & chromato	Restricted boltzmann machine	TRUE	Pixels denoising with patching,  possibility to explore the network, second process in the verticale dimension with RBM after reconstruction
+RBM pipeline 4	chromato	Restricted boltzmann machine	TRUE	Deep Believe Network, stacking of RBM on top of each other to learn more abstract features, possibilty to observe the picture going up and down at different levels of the network
+PCA pipeline 1	chromato	Principal component analysis	TRUE	Principal component analysis with chromatograms to observe the reconstruction, the component and the corresponding samples in a scatterplot
+HCA pipeline 1	chromato	Hierarchical clustering analysis	TRUE	Cluster tree
+RNN pipeline 1	chromato	Recurrent neural network	FALSE	unstable
+TSNE pipeline 1	chromato	TSNE	TRUE	dimension reduction algorithm

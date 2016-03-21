@@ -1,0 +1,13 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+admin.R
+.Rproj.user
+.Rhistory
+.RData
+/tlc-pict
+/www
+/presentation_mars
+/test
+/bioassay_paper
+/denoising_paper
+/Catechine
