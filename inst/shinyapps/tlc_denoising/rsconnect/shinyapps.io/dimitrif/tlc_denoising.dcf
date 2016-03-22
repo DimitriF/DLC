@@ -2,6 +2,6 @@ name: tlc_denoising
 account: dimitrif
 server: shinyapps.io
 appId: 85108
-bundleId: 380272
+bundleId: 399960
 url: https://dimitrif.shinyapps.io/tlc_denoising/
-when: 1456400868.50639
+when: 1458572346.46182
