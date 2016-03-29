@@ -3,6 +3,7 @@
 # shiny::runApp("/home/clau/Dropbox/DLC/inst/shinyapps/tlc_denoising/",launch.browser = T)
 library(shiny)
 library(shinydashboard)
+library(DLC)
 
 tlc_denoisingUI <- function(id){
   ns <- NS(id)
