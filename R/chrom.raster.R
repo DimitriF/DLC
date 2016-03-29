@@ -14,7 +14,7 @@
 chrom.raster <- function(data,x,normalization=F,...){
   plot(c(0,dim(data)[2]*1.2),c(0,dim(data)[1]), type='n',ylab="",xlab="",...)
   rasterImage(data,0,0,dim(data)[2],dim(data)[1],interpolate=F)
-  abline(v=x,col="red")
+  abline(v=x,col="red",lty=2,...)
   color <- c('red','green','blue','black')
   if(normalization==T){data <- data %>% normalize}
   data <- data * 0.2*dim(data)[2]+dim(data)[2]

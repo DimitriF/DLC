@@ -12,7 +12,8 @@ tlc_denoisingUI <- function(id){
                   tabPanel('input',
                            fileInput(ns('FilePicture'),'Upload your own picture(s) or let empty to use the demo file',multiple=T),
                            numericInput(ns('height'),'Height to redimension',256),
-                           checkboxInput(ns('normalize'),'Normalize the picture(s)',T),
+                           checkboxInput(ns('normalize'),'Normalize the input picture',T),
+                           checkboxInput(ns('normalize.output'),'Normalize the output picture',F),
                            actionButton(ns('go'),'Analyze'),
                            # uiOutput(ns('Options'))
                            numericInput(ns('conv_width'),'Pixel windows for the patch',3),
@@ -58,16 +59,20 @@ tlc_denoisingUI <- function(id){
                            tags$a(href='https://cran.r-project.org/web/packages/deepnet/deepnet.pdf', "R package")
                            ),
                   tabPanel('Download',
-                           p('download button incoming')
+                           downloadButton(ns("downloadPicture"))
                            )
                   )
     ),
     mainPanel(width = 9,
               tabsetPanel(
                 tabPanel(title = "Picture",
-                         plotOutput(ns('raster_0'),brush = brushOpts(id=ns("brush.raster_0"),resetOnNew = T),dblclick = ns("dblclick.raster_0")),br(),
+                         plotOutput(ns('raster_0'),brush = brushOpts(id=ns("brush.raster_0"),resetOnNew = F),dblclick = ns("dblclick.raster_0")),br(),
                          plotOutput(ns('raster_1'),click=ns('click.raster_1')),br(),
-                         plotOutput(ns('chromato_1'),height='600px'),br()
+                         # selectizeInput(ns("raster_hidden_select"),label="Hidden unit to see",choices=seq(10),selected=1),
+                         # selectizeInput(ns("raster_hidden_select"),label="Hidden unit to see",choices=seq(input$hidden),selected=1),
+                         uiOutput(ns("raster_hidden_select_UI")),
+                         plotOutput(ns('raster_hidden'),click=ns('click.raster_hidden')),br(),
+                         plotOutput(ns("model.plot.1")),br()
                 ),
                 tabPanel(title = "Integration",
                          plotOutput(ns("raster_2"),click=ns("click.raster_2"),hover = ns("hover.raster_2")),
@@ -78,7 +83,12 @@ tlc_denoisingUI <- function(id){
                                 numericInput(ns("integration_height"),"Number of pixels to take in height for the integration",15)
                          ),
                          column(width=8,
-                                tableOutput(ns("table_1"))
+                                h3("integration: basique baseline removal (mean of the four angle), volume under the curve integration"),
+                                tableOutput(ns("table_1")),
+                                h3("integration: chromatograms extraction, rolling ball baseline removal, area under the curve integration"),
+                                tableOutput(ns("table_2")),
+                                h3("integration: negatif mode, chromatograms extraction, rolling ball baseline removal, area under the curve integration"),
+                                tableOutput(ns("table_3"))
                          )
                 ),
                 tabPanel("Network exploration",
@@ -107,6 +117,11 @@ tlc_denoisingUI <- function(id){
 }
 
 tlc_denoisingServer <- function(input,output,session){
+  output$raster_hidden_select_UI <- renderUI({
+    ns <- session$ns
+    selectizeInput(ns("raster_hidden_select"),label="Hidden unit to see",choices=seq(input$hidden),selected=1)
+    # selectizeInput("raster_hidden_select",label="Hidden unit to see",choices=seq(input$hidden),selected=1)
+  })
   session$onSessionEnded(function() {
     click.raster_2.reset.obs$suspend()
     click.raster_2.update.obs$suspend()
@@ -219,13 +234,16 @@ tlc_denoisingServer <- function(input,output,session){
     )
     hover <- input$hover.raster_2
     x <- ceiling(as.numeric(hover[1]))
-    y <- ceiling(as.numeric(hover[2]))
-    par(mar=c(0,0,0,0))
-    data.process() %>% normalize %>%
-      raster(xlim=c(x-input$integration_width,x+input$integration_width),
-             ylim=c(y-input$integration_height,y+input$integration_height))
-    abline(v=c(x-input$integration_width/2,x+input$integration_width/2),col="red")
-    abline(h=c(y-input$integration_height/2,y+input$integration_height/2),col="red")
+    y <- dim(data.process())[1] - ceiling(as.numeric(hover[2]))
+    par(mfrow=c(2,1),mar=c(0,0,0,0))
+    data.process()[(y-input$integration_height):(y+input$integration_height),(x-input$integration_width):(x+input$integration_width),] %>%
+      normalize %>% chrom.raster(x=input$integration_height*2)
+    abline(v=c(input$integration_width/2,input$integration_width*3/2),col="red")
+    abline(h=c(input$integration_height/2,input$integration_height*3/2),col="red")
+    data.up.recon()[(y-input$integration_height):(y+input$integration_height),(x-input$integration_width):(x+input$integration_width),input$raster_hidden_select] %>%
+      normalize %>% chrom.raster(x=input$integration_height*2)
+    abline(v=c(input$integration_width/2,input$integration_width*3/2),col="red")
+    abline(h=c(input$integration_height/2,input$integration_height*3/2),col="red")
   })
   click.raster_2 <- reactiveValues(value=c())
   click.raster_2.update.obs <- observeEvent(input$click.raster_2,{
@@ -253,21 +271,46 @@ tlc_denoisingServer <- function(input,output,session){
     truc
   })
   output$table_1 <- renderTable({
+    # This table only take the volume under the curve, little correction: we minus the mean of the four angles
     truc <- integration_prep()
     truc$ymin <- dim(data.raw())[1] - truc$ymin
     truc$ymax <- dim(data.raw())[1] - truc$ymax
-
-    truc$Red_sum <- apply(truc[,3:6],1,function(x){sum(data.process()[x[3]:x[4],x[1]:x[2],1])})
     truc$Red_sum_corrected <- apply(truc[,3:6],1,function(x){sum(data.process()[x[3]:x[4],x[1]:x[2],1] - mean(data.process()[c(x[3],x[4]),c(x[1],x[2]),1]))})
-    truc$Red_max <- apply(truc[,3:6],1,function(x){max(data.process()[x[3]:x[4],x[1]:x[2],1])})
-    truc$Green_sum <- apply(truc[,3:6],1,function(x){sum(data.process()[x[3]:x[4],x[1]:x[2],2])})
     truc$Green_sum_corrected <- apply(truc[,3:6],1,function(x){sum(data.process()[x[3]:x[4],x[1]:x[2],2] - mean(data.process()[c(x[3],x[4]),c(x[1],x[2]),2]))})
-    truc$Green_max <- apply(truc[,3:6],1,function(x){max(data.process()[x[3]:x[4],x[1]:x[2],2])})
-    truc$Blue_sum <- apply(truc[,3:6],1,function(x){sum(data.process()[x[3]:x[4],x[1]:x[2],3])})
     truc$Blue_sum_corrected <- apply(truc[,3:6],1,function(x){sum(data.process()[x[3]:x[4],x[1]:x[2],3] - mean(data.process()[c(x[3],x[4]),c(x[1],x[2]),3]))})
-    truc$Blue_max <- apply(truc[,3:6],1,function(x){max(data.process()[x[3]:x[4],x[1]:x[2],3])})
+    for(i in seq(input$hidden)){
+      truc[,paste0("hidden_",i)] <- apply(truc[,3:6],1,function(x){sum(data.up.recon()[x[3]:x[4],x[1]:x[2],i] - mean(data.up.recon()[c(x[3],x[4]),c(x[1],x[2]),i]))})
+    }
     truc[,7:ncol(truc)]
   })
+
+  output$table_2 <- renderTable({
+    # This table do a more complex job. We extract each chromatogram, remove the baseline with the rolling ball algorithm, and integrate the area under the curve.
+    truc <- integration_prep()
+    truc$ymin <- dim(data.raw())[1] - truc$ymin
+    truc$ymax <- dim(data.raw())[1] - truc$ymax
+    dim.table <-truc[,3:6]
+    data <- abind(data.process(),data.up.recon(),along=3)
+    final <- f.integrate(data,dim.table,negatif = F,correct.baseline = T)
+    colnames(final) <- colnames(final,do.NULL = F)
+    colnames(final)[1:3] <- c("red","green","blue")
+    colnames(final)[4:ncol(final)] <- paste0("hidden_",seq(dim(data)[3]-3))
+    final
+  },digits=5)
+
+  output$table_3 <- renderTable({
+    # This table do a more complex job. we go in negatif, We extract each chromatogram, remove the baseline with the rolling ball algorithm, and integrate the area under the curve.
+    truc <- integration_prep()
+    truc$ymin <- dim(data.raw())[1] - truc$ymin
+    truc$ymax <- dim(data.raw())[1] - truc$ymax
+    dim.table <-truc[,3:6]
+    data <- abind(data.process(),data.up.recon(),along=3)
+    final <- f.integrate(data,dim.table,negatif = T,correct.baseline = T)
+    colnames(final) <- colnames(final,do.NULL = F)
+    colnames(final)[1:3] <- c("red","green","blue")
+    colnames(final)[4:ncol(final)] <- paste0("hidden_",seq(dim(data)[3]-3))
+    final
+  },digits=5)
 
   brush.raster_0 <- reactiveValues(xmin=NULL,xmax=NULL,ymin=NULL,ymax=NULL)
   dblclick.raster_0.reset.obs <- observeEvent(input$dblclick.raster_0, {
@@ -305,16 +348,26 @@ tlc_denoisingServer <- function(input,output,session){
   })
   data.raw.decon <- reactive({
     validate(
-      need(input$conv_width != 0, "Please choose a odd value for the pixel window")
+      need(round(input$conv_width/2) != input$conv_width/2, "Please choose a odd value for the pixel window")
     )
     data <- data.raw() %>% deconstruct.convol(margin=3,transform = F,conv_width = (input$conv_width-1)/2)
     # data <- data.raw() %>% deconstruct.convol(margin=3,transform = F,conv_width = 2)
     print(dim(data))
     data
   })
+  click.raster_0_1_2 <- reactiveValues(value=1)
+  click.raster_0_1_2.obs_0 <- observeEvent(input$click.raster_0,{
+    click.raster_0_1_2$value <- ceiling(as.numeric(input$click.raster_0[1]))
+  })
+  click.raster_0_1_2.obs_1 <- observeEvent(input$click.raster_1,{
+    click.raster_0_1_2$value <- ceiling(as.numeric(input$click.raster_1[1]))
+  })
+  click.raster_0_1_2.obs_hidden <- observeEvent(input$click.raster_hidden,{
+    click.raster_0_1_2$value <- ceiling(as.numeric(input$click.raster_hidden[1]))
+  })
   output$raster_0 <- renderPlot({
-    par(mar=c(0,0,4,0))
-    raster(data.raw(),main='Original data')
+    par(mar=c(0,0,2,0))
+    chrom.raster(data.raw(),main='Original data',x = click.raster_0_1_2$value)
   })
   model <- eventReactive(input$go,{
     withProgress(message = "Training network", value=0, {
@@ -330,12 +383,17 @@ tlc_denoisingServer <- function(input,output,session){
   })
   data.up.recon <- reactive({
     model <- model()
-    data.raw.decon() %>% rbm.up(model,.) %>% reconstruct(3,F,dimension = dim(data.raw()))
+    data.raw.decon() %>% rbm.up(model,.) %>% reconstruct(3,F,dimension = dim(data.raw())) %>% normalize
   })
   data.process <- reactive({
     withProgress(message = "Reconstructing picture", value=0, {
       model <- model()
-      data.raw.decon() %>% rbm.up(model,.)  %>% rbm.down(model,.) %>% reconstruct.convol(margin=3,transform = F,dimension = dim(data.raw()),conv_width = (input$conv_width-1)/2,take_center = F)
+      data <- data.raw.decon() %>% rbm.up(model,.)  %>% rbm.down(model,.) %>% reconstruct.convol(margin=3,transform = F,dimension = dim(data.raw()),conv_width = (input$conv_width-1)/2,take_center = F)
+      if(input$normalize.output == T){
+        data %>% normalize
+      }else{
+        data
+      }
       # data.raw.decon() %>% rbm.up(model,.)  %>% rbm.down(model,.) %>% reconstruct.convol(margin=3,transform = F,dimension = dim(data.raw()),conv_width = 2,take_center = F)
     })
   })
@@ -343,29 +401,42 @@ tlc_denoisingServer <- function(input,output,session){
     validate(
       need(input$go, "Click on the Analyze button")
     )
-    par(mar=c(0,0,4,0))
-    data.process() %>% raster(main='Reconstructed data')
+    par(mar=c(0,0,2,0))
+    data.process() %>% chrom.raster(main='Reconstructed data',x = click.raster_0_1_2$value)
   })
-  output$chromato_1 <- renderPlot({
+  output$raster_hidden <- renderPlot({
     validate(
-      need(input$click.raster_1 != "", "Click on the picture to see the chromatograms")
+      need(input$go, "Click on the Analyze button")
     )
-    click <- input$click.raster_1
-    x <- ceiling(as.numeric(click[1]))
-    par(mfrow=c(2,1),mar=c(0,0,0,0),oma=c(0,0,0,0),xaxt='n',yaxt='n')
-    ## Original
-    chrom.pict(data.raw(),x)
-    ## Reconstruct
-    chrom.pict(data.process(),x)
+    par(mar=c(0,0,2,0))
+    data.up.recon()[,,input$raster_hidden_select] %>% chrom.raster(main=paste0('hidden unit ',input$raster_hidden_select),x = click.raster_0_1_2$value)
   })
-
 
   output$plot3D_raw <- renderPlot({
     df <- data.raw()[,,as.numeric(input$channel_3D)]
     fields::drape.plot(1:nrow(df), 1:ncol(df), df, border=NA, theta = as.numeric(input$theta_3D), phi=as.numeric(input$phi_3D))
   },height=800)
+
   output$plot3D_process <- renderPlot({
     df <- data.process()[,,as.numeric(input$channel_3D)]
     fields::drape.plot(1:nrow(df), 1:ncol(df), df, border=NA, theta=as.numeric(input$theta_3D), phi=as.numeric(input$phi_3D))
   },height=800)
+
+  output$downloadPicture <- downloadHandler(
+    filename = function() {
+      paste(input$FilePicture$name,"processed.jpeg", sep = "_")
+    },
+    content = function(file) {
+      writeJPEG(data.process(),target=file)
+    }
+  )
+  output$model.plot.1 <- renderPlot({
+    par(mfrow=c(1,2))
+    truc <- PCA(scale(model()$W))$scores[,1:2]
+    plot(x=truc[,1],y=truc[,2],type="n",main="Principal component analysis of the weight matrix",
+         xlab="PC1",ylab="PC2")
+    text(x=truc[,1],y=truc[,2],labels=seq(input$hidden),cex=1)
+    plot(model()$iter_euclidean,type="l",main="Evolution of the euclidean distance",
+         xlab="minibatch iteration",ylab="distance")
+  })
 }
