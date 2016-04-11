@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>HPTLC and chemometrics</title>
+  <style type="text/css">
+    body, html {
+      font-family: Helvetica, Arial, sans-serif;
+      background-color: #eee;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    a {
+      text-decoration: none;
+      color: #1E6DE8;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    #titleBar {
+	  background: #fff;
+	  text-align: center;
+	  padding-bottom: 20px;
+	  border-bottom: 1px solid #ddd;
+    }
+    #title {
+      color: #666;
+	  margin: 0;
+	  padding: 25px 0 15px;
+	  font-size: 60px;
+    }
+	#links {
+	  font-size: 20px;
+    }
+    #content {
+      margin-left: auto;
+      margin-right: auto;
+	  text-align: center;
+    }
+	#shinyapps-big {
+	  display: inline-block;
+	}
+	#shinyapps-big .shinyapp {
+	  color: #444;
+	  border-radius: 5px;
+	  border: 1px solid #ccc;
+	  width: 300px;
+	  float: left;
+	  margin-top: 20px;
+	  margin-left: 20px;
+  	  background: #fafafa;
+	  vertical-align: top;
+	  transition: all 250ms;
+	}
+	#shinyapps-big .shinyapp:hover {
+      box-shadow: 0 3px 7px #aaa;
+      border-color: #888;
+      background: #fff;
+	}
+	#shinyapps-big .shinyapp .apptitle {
+	  text-align: center;
+	  padding: 10px;
+	  border-bottom: 4px double #aaa;
+	  font-weight: bold;
+	  border-radius: 5px 5px 0 0;
+	  cursor: pointer;
+	  font-size: 1.5em;
+	}
+	#shinyapps-big .shinyapp .appimg {
+	  width: 100%;
+	  cursor: pointer;
+	}
+	#shinyapps-big .applink {
+	  color: inherit;
+	  text-decoration: none !important;
+	}
+	#shinyapps-big .shinyapp .appdesc {
+	  text-align: left;
+	  padding: 10px;
+	  border-top: 4px double #aaa;
+	  margin-top: -4px;
+	  font-size: 15px;
+	  line-height: 1.3em;
+	  border-radius: 0 0 5px 5px;
+	}
+    @media only screen and (min-width: 980px) {
+      #content {
+      	max-width: 980px;
+      }
+      #shinyapps-big .shinyapp:nth-child(3n+1) {
+        clear: left;
+        margin-left: 0;
+      }
+    }
+    @media only screen and (max-width: 980px) {
+      #content {
+      	max-width: 650px;
+      }
+      #shinyapps-big .shinyapp:nth-child(2n+1) {
+        clear: left;
+        margin-left: 0;
+      }
+    }
+    @media only screen and (max-width: 650px) and (min-width: 510px) {
+      #content {
+      	max-width: 500px;
+      }
+      #shinyapps-big .shinyapp:nth-child(2n+1) {
+        clear: left;
+        margin-left: 0;
+      }
+      #shinyapps-big .shinyapp {
+      	margin-top: 10px;
+      	margin-left: 10px;
+      	width: 230px;
+      }
+    }
+    @media only screen and (max-width: 510px) {
+      #content {
+      	max-width: 350px;
+      }
+      #shinyapps-big .shinyapp:nth-child(1n+1) {
+        clear: left;
+        margin-left: 0;
+      }
+    }
+    @media only screen and (max-width: 750px) {
+      #title {
+    	font-size: 40px;
+    	padding: 20px 0 10px;
+      }
+      #titleBar {
+      	padding-bottom: 15px;
+      }
+      #links {
+      	font-size: 17px;
+      }
+    }
+	#otherlinks {
+	  text-align: left;
+	  margin-top: 100px;
+	}
+
+    .shiny-apps li {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="titleBar">
+    <h1 id="title">Collection of application made in R for HPTLC</h1>
+	<div id="links">
+	  <a href="https://github.com/dimitrif">Code for this website and all apps is on GitHub</a><br/>
+	</div>
+  </div>
+
+  <div id="content">
+    <div id="shinyapps-big">
+		<div class="shinyapp">
+		  <a class="applink" href="./rtlc/">
+			<div class="apptitle">
+			rtlc
+			</div>
+			<img class="appimg" src="./img/rtlc_image.png" />
+		  </a>
+		  <div class="appdesc">
+			Application to explore HPTLC pictures with chemometrics.
+		  </div>
+		</div>
+
+		<div class="shinyapp">
+		  <a class="applink" href="./tlc_denoising/">
+			<div class="apptitle">
+			tlc denoinsing
+			</div>
+			<img class="appimg" src="./img/tlc_denoising_image.png" />
+		  </a>
+		  <div class="appdesc">
+			Artificial neural network on pixel patches. Denoising and feature extractions.
+		  </div>
+		</div>
+
+		<div class="shinyapp">
+		  <a class="applink" href="./lipopeptidor/">
+			<div class="apptitle">
+			lipopeptidor
+			</div>
+			<img class="appimg" src="./img/screenshot_lipopeptidor.png" />
+		  </a>
+		  <div class="appdesc">
+			Brute force database of all possible combinaisons of lipopetide. Should facilitate the MS structural elucidation.
+		  </div>
+		</div>
+
+		<div class="shinyapp">
+		  <a class="applink" href="./plate_prediction/">
+			<div class="apptitle">
+			plate_prediction
+			</div>
+			<img class="appimg" src="./img/Screenshot_plate_prediction.png" />
+		  </a>
+		  <div class="appdesc">
+			Interactive predictive statistics made to work on a single plate, without preprocessing or variable selection.
+		  </div>
+		</div>
+
+    </div>
+
+	<div style="clear:both;"></div>
+
+	<div id="otherlinks">
+      <h3>Other Shiny apps that exist here</h3>
+	  <ul class="shiny-apps">
+        <li><strong><a href="./rtlc-ms/">rtlc-ms</a></strong> - Application to link thin layer chromatography and mass spectrometry, really basic prototype.</li>
+        <li><strong><a href="./tlcbrain/">tlcbrain</a></strong> - Application to explore the multidimensionality of tlc pictures.</li>
+        <li><strong><a href="./plate_prediction/">plate_prediction</a></strong> - interactive predictive statistics on a single plate with random forest.</li>
+        <li><strong><a href="./tlc_var_selector/">tlc_var_selector</a></strong> - Application to select variables of interest in HPTLC pictures.</li>
+        <li><strong><a href="./tlc_RBM_classification/">RBM classification</a></strong> - Deep learning on tlc video densitograms.</li>
+      <a href="http://shinyapps.ernaehrung.uni-giessen.de/">&lt; Back to main site</a>
+	</div>
+  </div>
+</body>
+</html>
+

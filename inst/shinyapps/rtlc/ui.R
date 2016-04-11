@@ -668,10 +668,10 @@ print(ggplot(data,aes(x=box,fill=Var.Dep))+geom_bar())
                                    ),
                             column(4,h4('Download'),
                                    textInput('mono.knitr.download.text','filename','rTLC-report'),
-                                   downloadButton('mono.knitr.download','Download the report')#,
-#                                    radioButtons('reportformat', 'Document format', c('PDF', 'HTML', 'Word'),
-#                                                 inline = TRUE),
-#                                    downloadButton('downloadReport')
+                                   # downloadButton('mono.knitr.download','Download the report'),
+                                   radioButtons('reportformat', 'Document format', c('PDF', 'HTML', 'Word'),
+                                                inline = TRUE),
+                                   downloadButton('downloadReport')
                                    )
                    ),
 #                    tabPanel('Batch Creator',

@@ -4,7 +4,7 @@
 ##' @param transform was transform used for deconstruction
 ##' @param conv_width number of pixels to take around, 0 mean take only 1
 ##' @examples
-##' data <- f.read.image(source='www/rTLC_demopicture.JPG',native=F,format = 'jpeg',height=128)
+##' data <- f.read.image(source='www/rTLC_demopicture.JPG',height=128)
 ##' print(dim(data))
 ##' decon <- data %>% deconstruct.convol(margin =3 ,transform = F, conv_width =2 )
 ##' print(dim(decon))

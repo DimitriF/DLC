@@ -18,7 +18,7 @@ f.integrate <- function(data,dim.table,negatif=F,correct.baseline=F){
   stock <- array(NA,dim=c(nrow(dim.table),256,dim(data)[3]))
   for(i in seq(nrow(dim.table))){
     for(j in seq(dim(data)[3])){
-      stock[i,,j] <- apply(data[,dim.table[i,1]:dim.table[i,2],j],1,mean)
+      stock[i,,j] <- apply(data[,dim.table[i,1]:dim.table[i,2],j],1,sum)
     }
   }
   if(correct.baseline==T){
@@ -29,7 +29,7 @@ f.integrate <- function(data,dim.table,negatif=F,correct.baseline=F){
   final <- array(NA,dim=c(nrow(dim.table),dim(data)[3]))
   for(i in seq(nrow(dim.table))){
     for(j in seq(dim(data)[3])){
-      final[i,j] <- mean(stock[i,dim.table[i,3]:dim.table[i,4],j])
+      final[i,j] <- sum(stock[i,dim.table[i,3]:dim.table[i,4],j])
     }
   }
   return(final)
