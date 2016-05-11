@@ -1,8 +1,8 @@
 #### License ####
 #Copyright (C) {2014}  {Fichou Dimitri}
 #{dimitrifichou@laposte.net}
-
-#This program is free software; you can redistribute it and/or modify
+ 
+#This program is free software; you can redistribute it and/or modify 
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation; either version 2 of the License, or
 # any later version.
@@ -44,7 +44,8 @@ MAC.inverse=F
 shinyServer(function(input, output,session) {
 #   session$onSessionEnded(function() {
 #     obs$suspend()
-#   })
+#   }
+
   #### demo batch #####
   output$download.demo.batch <- downloadHandler(
     filename = "rTLC_demobatch.xls",
@@ -388,17 +389,6 @@ shinyServer(function(input, output,session) {
     }
   )
 
-#   output$TableDimension <-renderHotable({
-#     inFile <- inFile.photo()
-#     truc <- nrow(inFile)
-#     data <- data.frame(width_of_the_plate = rep(20,truc),
-#                        left_distance = rep(2,truc),
-#                        band_width = rep(0.6,truc),
-#                        gap_between_band = rep(0.2,truc),
-#                        tolerance_for_the_calcul = rep(0.2,truc)
-#     )
-#     data
-#   }, readOnly=F)
 
   TableDimension <- reactive({
     # hot.to.df(input$TableDimension)
@@ -929,13 +919,15 @@ pca.plot.1<-reactive({
   if(input$col.plot.pca != "None" & input$shape.plot.pca == "None"){
     data$Color<-data[,input$col.plot.pca]
     plot<-ggplot()+geom_point(data=data,aes(x=PC1,y=PC2,col=Color),size=as.numeric(input$cex.pca))+
-      labs(x=xlabel, y=ylabel)
-  }
+      labs(x=xlabel, y=ylabel) +
+      scale_color_brewer(palette=input$pca.col.palette) # add here the color palette ref
+    }
   if(input$col.plot.pca != "None" & input$shape.plot.pca != "None"){
     data$Color<-data[,input$col.plot.pca]
     data$Shape<-data[,input$shape.plot.pca]
     plot<-ggplot()+geom_point(data=data,aes(x=PC1,y=PC2,col=Color,shape=Shape),size=as.numeric(input$cex.pca))+
-      labs(x=xlabel, y=ylabel)
+      labs(x=xlabel, y=ylabel) +
+      scale_color_brewer(palette=input$pca.col.palette) # add here the color palette ref
   }
 #   if(input$plotlyPCA==T){
 #     p <- plotly(username=input$plot.ly.user, key=input$plot.ly.key)
@@ -946,6 +938,11 @@ pca.plot.1<-reactive({
     plot<-plot+geom_text(data=data,aes(x=PC1,y=PC2,label=Label),hjust=as.numeric(input$hjust.pca),vjust=as.numeric(input$vjust.pca))
   }
   if(input$pca.ellipse == T){plot <- plot+ stat_ellipse(data=data,aes(x=PC1,y=PC2,col=Color),level=input$pca.ellipse.level)}
+  
+  plot <- plot +theme(axis.text=element_text(size=18),
+                      axis.title=element_text(size=18),
+                      plot.title = element_text(size=20))+
+    geom_vline(xintercept = 0) + geom_hline(yintercept = 0)
   return(plot+ggtitle(input$pca.plot.1.title))
 })
 output$pca.plot.1<-renderPlot({
@@ -1225,7 +1222,7 @@ output$Train.metric <- renderUI({
   if(input$Trainproblem == 'regression'){
     truc <- c('RMSE','Rsquared')
   }
-  selectizeInput('Train.metric','what summary metric will be used to select the optimal mode',choices=truc)
+  selectizeInput('Train.metric','what summary metric will be used to select the optimal model',choices=truc)
 })
 output$Train.model.algo <- renderUI({
   caret.table <- cbind(
@@ -1379,7 +1376,7 @@ output$Train.down.model.text <- renderUI({
 })
 
 output$Train.down.model <- downloadHandler(
-  filename = function(x){paste0(input$Train.down.model.text,'.Rdata')},
+  filename = function(x){paste0(input$Train.down.model.text,'.RData')},
   content = function(con) {
     assign('data',list(model = Train.model(),
                        origine.data = data.mono.2()[Train.partition(),,],
@@ -1515,6 +1512,12 @@ output$sessionInfo <- renderPrint({
   sessionInfo()
 })
 
-
-
+outputOptions(output, "table1", suspendWhenHidden = FALSE)
+outputOptions(output, "batch.Truc.mono", suspendWhenHidden = FALSE)
+outputOptions(output, "batch.filter", suspendWhenHidden = FALSE)
+outputOptions(output, "ptw.warp.ref", suspendWhenHidden = FALSE)
+outputOptions(output, "ptw.warp.ref.bis", suspendWhenHidden = FALSE)
+for(i in seq(20)){
+  outputOptions(output, paste0("VS_slider_",i), suspendWhenHidden = FALSE)
+}
 })

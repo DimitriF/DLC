@@ -1,0 +1,6 @@
+/figure
+/rsconnect
+*.csv
+*.tex
+*.log
+.Rproj.user

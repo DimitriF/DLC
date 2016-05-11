@@ -6,8 +6,8 @@
 #it under the terms of the GNU General Public License as published by
 #the Free Software Foundation; either version 2 of the License, or
 # any later version.
-
-#This program is distributed in the hope that it will be useful,
+ 
+#This program is distributed in the hope that it will be useful,  
 #but WITHOUT ANY WARRANTY; without even the implied warranty of
 #MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #GNU General Public License for more details.
@@ -91,13 +91,15 @@ shinyUI(navbarPage(title="rTLC",
                                                         downloadButton('TableDimensionSave','Save the Dimension table'),
                                                         fileInput("TableDimensionUpload","Upload the saved table"),
                                                         plotOutput('TableDimensionPlot')
-
-                                                        # hotable("TableDimension")
                                                     )
                                                   )
                                          ),
                                          tabPanel("batch",
-                                                  column(3,hr(),uiOutput('batch.Truc.mono'),h4('Column Filter: Keep only selected, if none, keep all.'),uiOutput('batch.filter')),
+                                                  column(3,
+                                                         hr(),
+                                                         uiOutput('batch.Truc.mono'),
+                                                         h4('Column Filter: Keep only selected, if none, keep all.'),
+                                                         uiOutput('batch.filter')),
                                                   column(9,hr(),tableOutput("table1"))
                                          ),
                                          tabPanel("Chromatograms",
@@ -392,6 +394,7 @@ shinyUI(navbarPage(title="rTLC",
                                            selectizeInput('PCA.comp.b', '2nd componant for the plot', choice=c("PC1","PC2","PC3","PC4","PC5","PC6","PC7","PC8","PC9","PC10"),select="PC2"),
                                            checkboxInput('pca.ellipse','Plot the ellipse according to the color',F),
                                            numericInput('pca.ellipse.level','Level to calculate the ellipse',0.95),
+                                           selectizeInput("pca.col.palette","palette color (if color used)",choices = c("Set1","Set2","Set3","Greys","Spectral","Pastel1","Pastel2","Paired","Dark2","Accent")),
                                            tableOutput("Table.dim.just.pca.label")
                                          ),
                                          mainPanel(
