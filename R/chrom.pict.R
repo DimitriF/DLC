@@ -11,7 +11,7 @@
 chrom.pict <- function(data,x,normalization=T,...){
   if(length(dim(data)) == 3){data.save <- data
     data <- array(data[dim(data)[1]:1,x,seq(3)],dim=c(dim(data)[1],1,3))
-    par(mar=c(0,0,0,0))
+    # par(mar=c(0,0,0,0))
     plot(c(0,dim(data)[1]),c(0,1.2), type='n',ylab="",xlab="",bty='n', ##input$Kohonen.1.height = 128
          main='')
     data %>% aperm(c(2,1,3)) %>% rasterImage(0,1.1,dim(data)[1] ,1.2) ##input$Kohonen.1.height = 128

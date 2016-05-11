@@ -19,7 +19,7 @@ deconstruct.convol(data, margin, transform, conv_width = 0)
 function to deconstruct an array,
 }
 \examples{
-data <- f.read.image(source='www/rTLC_demopicture.JPG',native=F,format = 'jpeg',height=128)
+data <- f.read.image(source='www/rTLC_demopicture.JPG',height=128)
 print(dim(data))
 decon <- data \%>\% deconstruct.convol(margin =3 ,transform = F, conv_width =2 )
 print(dim(decon))

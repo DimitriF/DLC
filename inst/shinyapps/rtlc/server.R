@@ -983,17 +983,20 @@ output$Table.dim.just.pca.label <-renderTable({
 }, sanitize.text.function = function(y) y)
 
 output$pca.loading <- renderPlot({
-  hauteur<-input$hauteur.mono
-  dist.bas<-input$dist.bas.mono
-  Zf <- input$Zf.mono
+  if(sum(selection.table()[,1]) == 1){
+    maxi <- selection.table()[selection.table()[,1]==T,4]
+    mini <- selection.table()[selection.table()[,1]==T,3]
+  }else{
+    validate(
+      need(sum(selection.table()[,1]) == 1,"no loading plot for complex variable selection")
+    )
+  }
   model <- model.pca()
   data <- loadings.PCA(model)[,as.numeric(input$pca.loading.choice)]
-  maxi <- (hauteur-dist.bas)/(Zf-dist.bas)
-  mini <- -dist.bas/(Zf-dist.bas)
   RF = seq(maxi,mini,length.out=length(data))
   # par(xaxp  = c(min(RF), max(RF), 0.1))
   plot(x=RF, xaxt = "n",
-          y=as.matrix(data),type="l",main=paste0("Loading plot: PC",input$pca.loading.choice),xlab=expression("R"['F']),ylab="intensity")
+       y=as.matrix(data),type="l",main=paste0("Loading plot: PC",input$pca.loading.choice),xlab=expression("R"['F']),ylab="intensity")
   axis(side = 1, at = round(seq(maxi,mini,length.out=(maxi-mini)*10),2))
   if(input$pcaloadinglocalmaxima == T){
     abline(v = RF[pick.peaks(data, input$pca.loading.local.maxima.span)], col = "blue")
