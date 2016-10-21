@@ -20,7 +20,7 @@ chrom.pict <- function(data,x,normalization=T,...){
     data <- array(data[dim(data)[1]:1,x,seq(dim(data)[3])],dim=c(dim(data)[1],1,dim(data)[3]))
     for(i in seq(dim(data)[3])){
       par(new=T)
-      plot(y=data[,,i],x=seq(0,1,length.out=dim(data)[1]),type='l',ylab="",xlab="",ylim=c(0,1.2),col=color[i],...)
+      plot(y=data[,,i],x=seq(0,1,length.out=dim(data)[1]),type='l',ylab="",xlab="",ylim=c(0,1.2),col=color[i],xaxt="n",...)
     }
   }else{
     plot(data[dim(data)[1]:1,x],type='l',...)

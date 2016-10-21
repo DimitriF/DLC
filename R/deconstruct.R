@@ -3,7 +3,7 @@
 ##' @param margin the margin used for deconstruction
 ##' @param transform was transform used for deconstruction
 ##' @examples
-##' data <- f.read.image(source='www/rTLC_demopicture.JPG',native=F,format = 'jpeg',height=128)
+##' data <- f.read.image(source='www/rTLC_demopicture.JPG',height=128)
 ##' decon <- data %>% deconstruct(margin =3 ,transform = F)
 ##' @author Dimitri Fichou
 ##' @export

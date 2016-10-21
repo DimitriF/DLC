@@ -4,6 +4,7 @@
 library(shiny)
 library(DLC)
 source('tlc_denoising.R')
+options(shiny.maxRequestSize=1000*1024^2)
 
 ui <- fluidPage(
   tags$head(tags$style(HTML(".box {height: 90vh; overflow-y: auto;}"))),
@@ -19,5 +20,6 @@ ui <- fluidPage(
 server <- function(input,output,session){
   tlc_denoising <- callModule(tlc_denoisingServer,id='tlc_denoising')
 }
+
 
 shinyApp(ui,server)

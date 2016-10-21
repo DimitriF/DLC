@@ -13,6 +13,7 @@ tlc_denoisingUI <- function(id){
                   tabPanel('input',
                            fileInput(ns('FilePicture'),'Upload your own picture(s) or let empty to use the demo file',multiple=T),
                            numericInput(ns('height'),'Height to redimension',256),
+                           checkboxInput(ns('negative'),'Use the negative trick',F),
                            checkboxInput(ns('normalize'),'Normalize the input picture',T),
                            checkboxInput(ns('normalize.output'),'Normalize the output picture',F),
                            actionButton(ns('go'),'Analyze'),
@@ -373,6 +374,7 @@ tlc_denoisingServer <- function(input,output,session){
   model <- eventReactive(input$go,{
     withProgress(message = "Training network", value=0, {
       data <- data.raw.decon()
+      if(input$negative){data <- 1- data}
       model <- rbm.train(data,
                          hidden=input$hidden,
                          numepochs = input$numepochs,
@@ -384,12 +386,14 @@ tlc_denoisingServer <- function(input,output,session){
   })
   data.up.recon <- reactive({
     model <- model()
-    data.raw.decon() %>% rbm.up(model,.) %>% reconstruct(3,F,dimension = dim(data.raw())) %>% normalize
+    data <- data.raw.decon() %>% rbm.up(model,.) %>% reconstruct(3,F,dimension = dim(data.raw())) %>% normalize
+    data
   })
   data.process <- reactive({
     withProgress(message = "Reconstructing picture", value=0, {
       model <- model()
       data <- data.raw.decon() %>% rbm.up(model,.)  %>% rbm.down(model,.) %>% reconstruct.convol(margin=3,transform = F,dimension = dim(data.raw()),conv_width = (input$conv_width-1)/2,take_center = F)
+      if(input$negative){data <- 1- data}
       if(input$normalize.output == T){
         data %>% normalize
       }else{
