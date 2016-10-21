@@ -17,7 +17,7 @@ deconstruct(data, margin, transform, conv_width = 1)
 function to deconstruct an array,
 }
 \examples{
-data <- f.read.image(source='www/rTLC_demopicture.JPG',native=F,format = 'jpeg',height=128)
+data <- f.read.image(source='www/rTLC_demopicture.JPG',height=128)
 decon <- data \%>\% deconstruct(margin =3 ,transform = F)
 }
 \author{

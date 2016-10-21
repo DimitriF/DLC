@@ -19,7 +19,7 @@ f.read.image(source, height, Normalize = F, ls.format = F)
 Function to read image files
 }
 \examples{
-data <- f.read.image('www/rTLC_demopicture.JPG',format='jpeg',native=F,height=256)
+data <- f.read.image('www/rTLC_demopicture.JPG',height=256)
 data \%>\% raster()
 }
 \author{

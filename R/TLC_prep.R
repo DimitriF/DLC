@@ -6,12 +6,14 @@
 ##' @param remove_interband boolean, T by default, should the interband be removed
 ##' @param height, number of vertical pixels to resize in
 ##' @author Dimitri Fichou
-##' @example
+##' @examples
+##' \dontrun{
 ##' dimension = read.xlsx("/home/clau/Dropbox/DLC/test/Catechine/TableDimensionCatechine in 1 µl.xls",1)
 ##' load("~/Dropbox/DLC/test/Catechine/rTLC Catechine.Rdata")
 ##' Dep = data$batch[,8:12]
 ##' source = dir("/home/clau/Dropbox/DLC/test/Catechine/",pattern = "254nm",full.names = T)
 ##' data = TLC_prep(source= Ind,dimension = dimension,Dep = Dep,height=256)
+##' }
 ##' @export
 TLC_prep<-function(source,dimension,Dep, remove_interband = T,height= 256,conv="ATS"){
   if(conv != "linomat"){ # this put everybody back to linomat convention
