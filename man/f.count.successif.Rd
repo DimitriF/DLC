@@ -15,4 +15,3 @@ function to count the number of successif occurence in a vector
 \author{
 Dimitri Fichou
 }
-

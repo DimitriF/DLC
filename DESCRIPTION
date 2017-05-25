@@ -11,4 +11,4 @@ License: GPL
 Depends: jpeg, png, tiff, abind, shiny, shinydashboard, magrittr, kohonen, plyr, markdown, rgl,
   ChemometricsWithR, RSNNS, tsne, baseline
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

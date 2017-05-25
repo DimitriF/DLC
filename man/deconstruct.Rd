@@ -23,4 +23,3 @@ decon <- data \%>\% deconstruct(margin =3 ,transform = F)
 \author{
 Dimitri Fichou
 }
-

@@ -33,4 +33,3 @@ yy <- nn.predict(nn,test_x)
 \author{
 Xiao Rong
 }
-

@@ -18,4 +18,3 @@ run.plate_prediction()
 \author{
 Dimitri Fichou
 }
-

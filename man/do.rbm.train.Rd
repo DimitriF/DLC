@@ -19,4 +19,3 @@ do the rbm training, mean to be use inside rbm.train
 \author{
 Xiao Rong
 }
-

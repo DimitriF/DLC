@@ -15,4 +15,3 @@ Modification of the map function of the kohonen package in order to return the d
 \author{
 Dimitri Fichou
 }
-

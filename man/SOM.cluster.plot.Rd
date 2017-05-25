@@ -24,4 +24,3 @@ Function to plot an object return by the SOM.cluster function
 \author{
 Dimitri Fichou
 }
-

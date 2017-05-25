@@ -28,4 +28,3 @@ f.integrate(data,dim.table,F,T)
 \author{
 Dimitri Fichou
 }
-

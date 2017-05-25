@@ -21,4 +21,3 @@ data \%>\% normalize \%>\% raster
 \author{
 Dimitri Fichou
 }
-

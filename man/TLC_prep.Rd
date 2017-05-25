@@ -33,4 +33,3 @@ data = TLC_prep(source= Ind,dimension = dimension,Dep = Dep,height=256)
 \author{
 Dimitri Fichou
 }
-

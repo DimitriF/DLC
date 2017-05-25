@@ -18,4 +18,3 @@ run.tlc_RBM_classification()
 \author{
 Dimitri Fichou
 }
-

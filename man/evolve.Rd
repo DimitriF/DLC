@@ -21,4 +21,3 @@ function to reconstruct an array from a df by evolving one of the dimension
 \author{
 Dimitri Fichou
 }
-

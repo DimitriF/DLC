@@ -38,4 +38,3 @@ Training a Stacked Autoencoder
 \author{
 Xiao Rong
 }
-

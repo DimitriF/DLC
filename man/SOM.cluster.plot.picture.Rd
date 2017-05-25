@@ -17,4 +17,3 @@ Function to plot a picture
 \author{
 Dimitri Fichou
 }
-

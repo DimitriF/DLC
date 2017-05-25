@@ -46,4 +46,3 @@ r1 <- rbm.train(x3,10,numepochs=20,cd=10)
 \author{
 Xiao Rong
 }
-

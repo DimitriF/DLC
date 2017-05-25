@@ -26,4 +26,3 @@ data \%>\% raster()
 \author{
 Dimitri Fichou
 }
-

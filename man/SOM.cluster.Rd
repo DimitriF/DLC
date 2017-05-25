@@ -53,4 +53,3 @@ model$data.recon[[1]][,,1] \%>\% raster
 \author{
 Dimitri Fichou
 }
-

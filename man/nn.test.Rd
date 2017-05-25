@@ -36,4 +36,3 @@ err <- nn.test(nn,test_x,y)
 \author{
 Xiao Rong
 }
-

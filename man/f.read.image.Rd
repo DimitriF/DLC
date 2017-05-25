@@ -4,7 +4,7 @@
 \alias{f.read.image}
 \title{Function to read image files}
 \usage{
-f.read.image(source, height, Normalize = F, ls.format = F)
+f.read.image(source, height = NULL, Normalize = F, ls.format = F)
 }
 \arguments{
 \item{source}{the path of the file}
@@ -25,4 +25,3 @@ data \%>\% raster()
 \author{
 Dimitri Fichou
 }
-

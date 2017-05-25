@@ -18,4 +18,3 @@ run.tlc_denoising()
 \author{
 Dimitri Fichou
 }
-

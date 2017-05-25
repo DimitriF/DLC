@@ -26,4 +26,3 @@ recon <- decon \%>\% reconstruct(margin =3 ,transform = F, dim(data))
 \author{
 Dimitri Fichou
 }
-
