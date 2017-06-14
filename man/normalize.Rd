@@ -4,12 +4,14 @@
 \alias{normalize}
 \title{Function to normalize array or matrix}
 \usage{
-normalize(data, hidden = F)
+normalize(data, hidden = F, ref = NULL)
 }
 \arguments{
 \item{data}{a 3D array or a matrix}
 
 \item{hidden}{option to normalize in other dimension than the dimension 3}
+
+\item{ref}{optionnal picture to keep the max and min values}
 }
 \description{
 Function to normalize array or matrix
