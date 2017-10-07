@@ -18,4 +18,3 @@ run.rtlc()
 \author{
 Dimitri Fichou
 }
-

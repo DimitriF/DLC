@@ -28,4 +28,3 @@ text(x=x,y=y,labels='X',col='red')
 \author{
 Dimitri Fichou
 }
-

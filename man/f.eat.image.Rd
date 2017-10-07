@@ -5,7 +5,8 @@
 \title{Function to extract chromatograms from an 3d array, or a 2d matrix}
 \usage{
 f.eat.image(data, conv = "linomat", largeur = 200, dist.gauche = 20,
-  band = 6, ecart = 2, tolerance = 1, cropping = 0)
+  band = 6, ecart = 2, tolerance = 1, cropping = 0, nbr.band = NULL,
+  plotting = F)
 }
 \arguments{
 \item{data}{input array or matrix}
@@ -23,22 +24,19 @@ f.eat.image(data, conv = "linomat", largeur = 200, dist.gauche = 20,
 \item{tolerance}{mm to remove on each side of the band in order to take only the center}
 
 \item{cropping}{mm to remove on the left part of the plate in the largeur and dist.gauche arameter in order to counter the intempestive camag cropping}
+
+\item{nbr.band}{if not specified, the software assume it itself, otherwise will force the number of band, could lead to an error if not enough space}
+
+\item{plotting}{will plot the raster to check the extraction}
 }
 \description{
 Function to extract chromatograms from an 3d array, or a 2d matrix
 }
 \examples{
 data <- f.read.image('www/rTLC_demopicture.JPG',height=256)
-largeur = 200
-dist.gauche=20
-band=6
-ecart=2
-tolerance=1
-cropping = 0
-data <- f.eat.image(data,conv="linomat",largeur = largeur,dist.gauche=dist.gauche,band=band,ecart=ecart,tolerance=tolerance,cropping = cropping)
+data <- f.eat.image(data,conv="linomat",largeur = 200,dist.gauche=20,band=6,ecart=2,tolerance=1,cropping = 0,nbr.band=20,plotting=T)
 data \%>\% raster()
 }
 \author{
 Dimitri Fichou
 }
-

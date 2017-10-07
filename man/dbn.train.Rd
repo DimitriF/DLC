@@ -35,4 +35,3 @@ Training a Deep Belief Net
 \author{
 Xiao Rong
 }
-

@@ -51,4 +51,3 @@ nn <-nn.train(x,y,hidden=c(5))
 \author{
 Xiao Rong
 }
-

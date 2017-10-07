@@ -4,7 +4,7 @@
 \alias{raster}
 \title{function to plot an image}
 \usage{
-raster(data, main = "", Title.dim = F, ...)
+raster(data, main = "", Title.dim = F, interpolate = F, ...)
 }
 \arguments{
 \item{data}{an array, or a matrix}
@@ -25,4 +25,3 @@ data \%>\% raster(main='HPTLC plate',Title.dim=T)
 \author{
 Dimitri Fichou
 }
-

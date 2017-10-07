@@ -28,4 +28,3 @@ h <- rbm.up(r1,v)
 \author{
 Xiao Rong
 }
-

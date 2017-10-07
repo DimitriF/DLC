@@ -13,9 +13,9 @@ f.read.image<-function(source,height=NULL,Normalize=F,ls.format=F){
   ls <- list()
   for(i in source){
     data = NULL
-    try(data<-readTIFF(i,native=F)) # we could use the magic number instead of try here
-    try(data<-readJPEG(source=i,native=F))
-    try(data<-readPNG(source=i,native=F))
+    try(data<-readTIFF(i,native=F,silent = T)) # we could use the magic number instead of try here
+    try(data<-readJPEG(source=i,native=F,silent = T))
+    try(data<-readPNG(source=i,native=F,silent = T))
     if(!is.null(data)){
       if(!is.null(height)){
         data <- redim.array(data,height)

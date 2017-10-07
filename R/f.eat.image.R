@@ -8,20 +8,15 @@
 ##' @param ecart gap between band in mm
 ##' @param tolerance mm to remove on each side of the band in order to take only the center
 ##' @param cropping mm to remove on the left part of the plate in the largeur and dist.gauche arameter in order to counter the intempestive camag cropping
-##' @param nbr.band optionnal, number of bands
+##' @param nbr.band if not specified, the software assume it itself, otherwise will force the number of band, could lead to an error if not enough space
+##' @param plotting will plot the raster to check the extraction
 ##' @examples
 ##' data <- f.read.image('www/rTLC_demopicture.JPG',height=256)
-##' largeur = 200
-##' dist.gauche=20
-##' band=6
-##' ecart=2
-##' tolerance=1
-##' cropping = 0
-##' data <- f.eat.image(data,conv="linomat",largeur = largeur,dist.gauche=dist.gauche,band=band,ecart=ecart,tolerance=tolerance,cropping = cropping)
+##' data <- f.eat.image(data,conv="linomat",largeur = 200,dist.gauche=20,band=6,ecart=2,tolerance=1,cropping = 0,nbr.band=20,plotting=T)
 ##' data %>% raster()
 ##' @author Dimitri Fichou
 ##' @export
-f.eat.image<-function(data,conv="linomat",largeur=200,dist.gauche=20,band=6,ecart=2,tolerance=1,cropping = 0,nbr.band=NULL){
+f.eat.image<-function(data,conv="linomat",largeur=200,dist.gauche=20,band=6,ecart=2,tolerance=1,cropping = 0,nbr.band=NULL,plotting=F){
   if(length(dim(data)) == 2){ # array coertion
     data = array(data,dim=c(dim(data),1))
   }
@@ -41,6 +36,13 @@ f.eat.image<-function(data,conv="linomat",largeur=200,dist.gauche=20,band=6,ecar
   for(j in seq(dim(data)[3])){
     for(i in c(0:(nbr.band-1))){
       store[i+1,,j] <-apply(data[,(dim(data)[2]/largeur*((dist.gauche+tolerance)+i*(band+ecart))):(dim(data)[2]/largeur*((dist.gauche+band-tolerance)+i*(band+ecart))),j],1,mean)
+    }
+  }
+  if(plotting){
+    raster(data)
+    for(i in c(0:(nbr.band-1))){
+      abline(v=(dim(data)[2]/largeur*((dist.gauche+tolerance)+i*(band+ecart))),col="green")
+      abline(v=(dim(data)[2]/largeur*((dist.gauche+band-tolerance)+i*(band+ecart))),col="red")
     }
   }
   return(store)

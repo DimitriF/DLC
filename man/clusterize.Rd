@@ -21,4 +21,3 @@ function to clusterize the code of the model
 \author{
 Dimitri Fichou
 }
-

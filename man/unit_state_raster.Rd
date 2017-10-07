@@ -23,4 +23,3 @@ function to plot the image of a given hidden unit state for pixel studies
 \author{
 Dimitri Fichou
 }
-

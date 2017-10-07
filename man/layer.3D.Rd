@@ -19,4 +19,3 @@ layer.3D(data[,,1])
 \author{
 Dimitri Fichou
 }
-

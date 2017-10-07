@@ -54,4 +54,3 @@ nn.test(dnn,test_x,y)
 \author{
 Xiao Rong
 }
-

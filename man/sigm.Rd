@@ -19,4 +19,3 @@ data \%>\% sigm \%>\% raster
 \author{
 Xiao Rong
 }
-

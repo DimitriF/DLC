@@ -19,4 +19,3 @@ Predict top layer hidden unit from visible units
 \author{
 Xiao Rong
 }
-

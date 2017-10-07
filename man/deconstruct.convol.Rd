@@ -27,4 +27,3 @@ print(dim(decon))
 \author{
 Dimitri Fichou
 }
-

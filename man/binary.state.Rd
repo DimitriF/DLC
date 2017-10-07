@@ -15,4 +15,3 @@ Calculate probability real values
 \author{
 Xiao Rong
 }
-

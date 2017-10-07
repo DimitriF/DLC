@@ -23,4 +23,3 @@ Function to know which cell was click, used in the shiny apps
 \author{
 Dimitri Fichou
 }
-

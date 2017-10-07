@@ -31,4 +31,3 @@ recon <- decon \%>\% reconstruct.convol(margin =3 ,transform = F,dimension=dim(d
 \author{
 Dimitri Fichou
 }
-

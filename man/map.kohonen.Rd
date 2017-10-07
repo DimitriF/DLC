@@ -24,4 +24,3 @@ Modification of the map.kohonen function of the kohonen package in order to retu
 \author{
 Dimitri Fichou
 }
-

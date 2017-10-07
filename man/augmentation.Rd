@@ -24,4 +24,3 @@ abind(augmented,along=2) \%>\% raster()
 \author{
 Dimitri Fichou
 }
-

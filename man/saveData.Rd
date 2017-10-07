@@ -15,4 +15,3 @@ Function to create the data base on mongodb, not working yet
 \author{
 Dimitri Fichou
 }
-

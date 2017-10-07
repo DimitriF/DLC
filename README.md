@@ -5,7 +5,7 @@ title: "Deep Layer Chromatography"
 Application to explore, preprocess and process HPTLC picture with neural network technics.
 
 To see it running:
-https://dimitrif.shinyapps.io/TLC-brain/
+http://shinyapps.ernaehrung.uni-giessen.de/tlc_denoising
 
 To install locally:
 
@@ -20,7 +20,7 @@ devtools::install_github('DimitriF/DLC')
 
 Then, run this command to launch the application
 ```r
-DLC::run.tlcbrain()
+DLC::run.tlc_denoising()
 ```
 
 Enjoy and don't hesitate to contact me in case for any issue

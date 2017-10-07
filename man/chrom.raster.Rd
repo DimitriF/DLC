@@ -4,7 +4,7 @@
 \alias{chrom.raster}
 \title{Function to plot a picture AND the 3 channel of an array as chromatograms,}
 \usage{
-chrom.raster(data, x, normalization = F, ...)
+chrom.raster(data, x, normalization = F, edge = 0, ...)
 }
 \arguments{
 \item{data}{a 3D array of dim[3] = 3}
@@ -12,6 +12,8 @@ chrom.raster(data, x, normalization = F, ...)
 \item{x}{the x coordinate to look at}
 
 \item{normalization}{either or not normalisation should happen before plotting the chromatograms}
+
+\item{edge}{allow to apply the mean function over a range to increase teh signal/noise ratio}
 
 \item{...}{extra parameters to be passed to the plot function}
 }
@@ -25,4 +27,3 @@ data \%>\% chrom.raster(x=140)
 \author{
 Dimitri Fichou
 }
-
