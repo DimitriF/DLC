@@ -9,13 +9,13 @@
 ##' @author Dimitri Fichou
 ##' @export
 
-raster <- function(data,main='',Title.dim=F,...){ # a 3D array
+raster <- function(data,main='',Title.dim=F,interpolate = F,...){ # a 3D array
   # par(mar=c(0,0,2,0),oma=c(0,0,2,0))
   if(length(dim(data))>2){if(dim(data)[3] > 3){data <- data[,,c(1,2,3)]}}
   # print('SOM.cluster.plot.picture')
   # print(dim(data))
   if(Title.dim == T){main=paste0('Dimensions: ',paste(dim(data),collapse='-'),'\n',main)}
   plot(c(0,dim(data)[2]),c(0,dim(data)[1]), type='n',ylab="",xlab="",main=main,...)
-  rasterImage(data,0,0,dim(data)[2],dim(data)[1],interpolate=F)
+  rasterImage(data,0,0,dim(data)[2],dim(data)[1],interpolate=interpolate)
 
 }

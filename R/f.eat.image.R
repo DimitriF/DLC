@@ -8,6 +8,7 @@
 ##' @param ecart gap between band in mm
 ##' @param tolerance mm to remove on each side of the band in order to take only the center
 ##' @param cropping mm to remove on the left part of the plate in the largeur and dist.gauche arameter in order to counter the intempestive camag cropping
+##' @param nbr.band optionnal, number of bands
 ##' @examples
 ##' data <- f.read.image('www/rTLC_demopicture.JPG',height=256)
 ##' largeur = 200
@@ -20,7 +21,7 @@
 ##' data %>% raster()
 ##' @author Dimitri Fichou
 ##' @export
-f.eat.image<-function(data,conv="linomat",largeur=200,dist.gauche=20,band=6,ecart=2,tolerance=1,cropping = 0){
+f.eat.image<-function(data,conv="linomat",largeur=200,dist.gauche=20,band=6,ecart=2,tolerance=1,cropping = 0,nbr.band=NULL){
   if(length(dim(data)) == 2){ # array coertion
     data = array(data,dim=c(dim(data),1))
   }
@@ -31,8 +32,9 @@ f.eat.image<-function(data,conv="linomat",largeur=200,dist.gauche=20,band=6,ecar
     dist.gauche<-dist.gauche-band/2
     ecart<-ecart-band
   }
-
-  nbr.band<-round((largeur-2*dist.gauche)/(band+ecart))
+  if(is.null(nbr.band)){
+    nbr.band<-round((largeur-2*dist.gauche)/(band+ecart))
+  }
 
   store <- array(dim = c(nbr.band,dim(data)[1],dim(data)[3]))
 

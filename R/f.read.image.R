@@ -9,15 +9,20 @@
 ##' data %>% raster()
 ##' @author Dimitri Fichou
 ##' @export
-f.read.image<-function(source,height,Normalize=F,ls.format=F){
+f.read.image<-function(source,height=NULL,Normalize=F,ls.format=F){
   ls <- list()
   for(i in source){
+    data = NULL
     try(data<-readTIFF(i,native=F)) # we could use the magic number instead of try here
     try(data<-readJPEG(source=i,native=F))
     try(data<-readPNG(source=i,native=F))
-    data <- redim.array(data,height)
-    if(Normalize == T){data <- data %>% normalize}
-    ls[[i]]<- data
+    if(!is.null(data)){
+      if(!is.null(height)){
+        data <- redim.array(data,height)
+      }
+      if(Normalize == T){data <- data %>% normalize}
+      ls[[i]]<- data
+    }
   }
   if(ls.format == F){
     data <- abind(ls,along=2)
