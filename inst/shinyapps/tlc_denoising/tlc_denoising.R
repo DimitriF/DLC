@@ -1,119 +1,49 @@
 # tlc_denoising module
-# rsconnect::deployApp("/home/clau/Dropbox/DLC/inst/shinyapps/tlc_denoising/",account="dimitrif",appName="tlc_denoising")
-# shiny::runApp("/home/clau/Dropbox/DLC/inst/shinyapps/tlc_denoising/",launch.browser = T)
-library(shiny)
-library(shinydashboard)
+
+## this file contain several deprecated object in teh server part.
+
 library(DLC)
 
 tlc_denoisingUI <- function(id){
   ns <- NS(id)
   sidebarLayout(
     sidebarPanel(width = 3,
-      tabsetPanel(
-                  tabPanel('input',
-                           fileInput(ns('FilePicture'),'Upload your own picture(s) or let empty to use the demo file',multiple=T),
-                           numericInput(ns('height'),'Height to redimension',256),
-                           checkboxInput(ns('negative'),'Use the negative trick',F),
-                           checkboxInput(ns('normalize'),'Normalize the input picture',T),
-                           checkboxInput(ns('normalize.output'),'Normalize the output picture',F),
-                           actionButton(ns('go'),'Analyze'),
-                           # uiOutput(ns('Options'))
-                           numericInput(ns('conv_width'),'Pixel windows for the patch',3),
-                           numericInput(ns('hidden'),'Number of hidden unit in the layer',4),
-                           numericInput(ns('numepochs'),'Number of epoch',5),
-                           numericInput(ns('batchsize'),'batchsize',1000),
-                           numericInput(ns('momentum'),'momentum',0.5),
-                           numericInput(ns('learningrate'),'learningrate',0.1)
-                           ),
-                  tabPanel('Info',
-                           h4('Intro'),
-                           p('This tool use neural network to reproduce the way the brain see a noisy HPTLC picture in order to remove it'),
-                           p('The process contain 5 phases:'),
-                           p('read the picture'),
-                           p('deconstruct the array'),
-                           p('train the network'),
-                           p('cross the network with the data to denoise them'),
-                           p('reconstruct the array'),
-                           h4('Algorithm:'),
-                           p('RBM: an algorithm witch encode the input into a given amount of hidden unit and try to reproduce the input from it'),
-                           h4('Plots:'),
-                           p('image: original'),
-                           p('image: reconstruct from hidden layer'),
-                           p('chromatograms: input and output data'),
-                           h4('Options:'),
-                           p('Pixel windows for the patch: 5*5'),
-                           p('hidden:	number of hidden units'),
-                           p('numepochs:	number of iteration for samples'),
-                           p('batchsize: size of mini-batch'),
-                           p('learningrate:	learning rate for gradient descent.'),
-                           p('momentum:	momentum for gradient descent.'),
-                           h4('Integration tab'),
-                           p("The integration tab allows to integrate the volume under the curve,
-                              click on the normalised picture to select a zone of interest,
-                             choose the dimension of the zone and observe the table"),
-                           p("For now, copy paste the table, later, we'll implement in tool calibration and plotting")
-                           ),
-                  tabPanel('Links',
-                           br(),
-                           HTML('<a href="mailto:dimitrifichou@gmail.com?Subject=tlc_denoising" target="_top">contact</a>'),br(),br(),
-                           HTML('<a href="http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf" target="_blank">Paper</a>'),br(),br(),
-                           tags$a(href='https://en.wikipedia.org/wiki/Restricted_Boltzmann_machine',target="_blank", "Wikipedia"),br(),br(),
-                           tags$a(href='https://cran.r-project.org/web/packages/deepnet/deepnet.pdf', "R package")
-                           ),
-                  tabPanel('Download',
-                           downloadButton(ns("downloadPicture"))
-                           )
-                  )
+                 tabsetPanel(
+                   tabPanel('input',
+                            fileInput(ns('FilePicture'),'Select a chromatogram image',multiple=T),
+                            numericInput(ns('height'),'Pixel height',256),
+                            checkboxInput(ns('negative'),'Use negative peak inversion',F),
+                            checkboxInput(ns('normalize'),'Normalize the input picture',T),
+                            checkboxInput(ns('normalize.output'),'Normalize the output picture',F),
+                            actionButton(ns('go'),'Analyze'),
+                            # uiOutput(ns('Options'))
+                            numericInput(ns('conv_width'),'Pixel windows for the patch',3),
+                            numericInput(ns('hidden'),'Number of hidden unit in the layer',4),
+                            numericInput(ns('numepochs'),'Number of epoch',5),
+                            numericInput(ns('batchsize'),'Batchsize',1000),
+                            numericInput(ns('momentum'),'Momentum',0.5),
+                            numericInput(ns('learningrate'),'Learningrate',0.1)
+                   ),
+                   tabPanel('Links',
+                            br(),
+                            HTML('<a href="mailto:dimitrifichou@gmail.com?Subject=tlc_denoising" target="_top">Contact</a>'),br(),br(),
+                            HTML('<a href="http://www.cs.toronto.edu/~hinton/absps/guideTR.pdf" target="_blank">Paper on RBM</a>'),br(),br(),
+                            tags$a(href='https://en.wikipedia.org/wiki/Restricted_Boltzmann_machine',target="_blank", "Wikipedia"),br(),br(),
+                            tags$a(href='https://github.com/DimitriF/DLC',target="_blank", "GitHub")
+                   ),
+                   tabPanel('Download',
+                            downloadButton(ns("downloadPicture"),label = "Download pictures")
+                   )
+                 )
     ),
     mainPanel(width = 9,
-              tabsetPanel(
-                tabPanel(title = "Picture",
-                         plotOutput(ns('raster_0'),brush = brushOpts(id=ns("brush.raster_0"),resetOnNew = F),dblclick = ns("dblclick.raster_0")),br(),
-                         plotOutput(ns('raster_1'),click=ns('click.raster_1')),br(),
-                         # selectizeInput(ns("raster_hidden_select"),label="Hidden unit to see",choices=seq(10),selected=1),
-                         # selectizeInput(ns("raster_hidden_select"),label="Hidden unit to see",choices=seq(input$hidden),selected=1),
-                         uiOutput(ns("raster_hidden_select_UI")),
-                         plotOutput(ns('raster_hidden'),click=ns('click.raster_hidden')),br(),
-                         plotOutput(ns("model.plot.1")),br()
-                ),
-                tabPanel(title = "Integration",
-                         plotOutput(ns("raster_2"),click=ns("click.raster_2"),hover = ns("hover.raster_2")),
-                         plotOutput(ns("raster_2_zoom")),
-                         column(width=4,
-                                actionButton(ns('reset_table'),"Reset table"),
-                                numericInput(ns("integration_width"),"Number of pixels to take in width for the integration",30),
-                                numericInput(ns("integration_height"),"Number of pixels to take in height for the integration",15)
-                         ),
-                         column(width=8,
-                                h3("integration: basique baseline removal (mean of the four angle), volume under the curve integration"),
-                                tableOutput(ns("table_1")),
-                                h3("integration: chromatograms extraction, rolling ball baseline removal, area under the curve integration"),
-                                tableOutput(ns("table_2")),
-                                h3("integration: negatif mode, chromatograms extraction, rolling ball baseline removal, area under the curve integration"),
-                                tableOutput(ns("table_3"))
-                         )
-                ),
-                tabPanel("Network exploration",
-                         h2("synthetic patches"),
-                         plotOutput(ns("network_0"),click=ns("click.network_0")),
-                         plotOutput(ns("raster_network_0")),
-                         h2("specific patch state"),
-                         plotOutput(ns("raster_network_1"),brush = brushOpts(id=ns("brush.raster_network_1"),resetOnNew = T),
-                                    dblclick = ns("dblclick.raster_network_1")),
-                         plotOutput(ns("raster_network_1_original"),click = ns("click.raster_network_1"))
-                         ),
-                tabPanel(title="3D",
-                         sliderInput(ns("theta_3D"),"theta",min=0,max=360,value = 45,step=1),
-                         sliderInput(ns("phi_3D"),"phi",min=0,max=360,value = 45,step=1),
-                         selectInput(ns("channel_3D"),"Channel to use",choices=seq(3)),
-                         column(width=6,
-                                plotOutput(ns("plot3D_raw"))
-                                ),
-                         column(width=6,
-                                plotOutput(ns("plot3D_process"))
-                                )
-                         )
-              )
+              plotOutput(ns('raster_0'),brush = brushOpts(id=ns("brush.raster_0"),resetOnNew = F),dblclick = ns("dblclick.raster_0")),br(),
+              plotOutput(ns('raster_1'),click=ns('click.raster_1')),br(),
+              # selectizeInput(ns("raster_hidden_select"),label="Hidden unit to see",choices=seq(10),selected=1),
+              # selectizeInput(ns("raster_hidden_select"),label="Hidden unit to see",choices=seq(input$hidden),selected=1),
+              uiOutput(ns("raster_hidden_select_UI")),
+              plotOutput(ns('raster_hidden'),click=ns('click.raster_hidden')),br(),
+              plotOutput(ns("model.plot.1")),br()
     )
   )
 }
@@ -332,7 +262,7 @@ tlc_denoisingServer <- function(input,output,session){
   data.raw <- reactive({
     withProgress(message = "Reading image", value=0, {
       if(is.null(input$FilePicture)){
-        data <- f.read.image('www/bioassay-1.jpg',height = input$height,Normalize = input$normalize)
+        data <- f.read.image('www/bioassay-1.jpg',height = input$height)
       }else{
         validate(
           need(input$FilePicture != "", "Please upload a picture")
@@ -340,12 +270,13 @@ tlc_denoisingServer <- function(input,output,session){
         data <- f.read.image(input$FilePicture$datapath,height = input$height,Normalize = input$normalize)
       }
     })
+    if(input$normalize){data=normalize(data)}
     if(!is.null(brush.raster_0$xmin)){
       # truc <- brush.raster_0
       # print(truc)
       # truc[3:4] <- dim(data)[1] - truc[3:4]
       data <- data[dim(data)[1]-brush.raster_0$ymax:brush.raster_0$ymin,brush.raster_0$xmin:brush.raster_0$xmax,]
-      }
+    }
     return(data)
   })
   data.raw.decon <- reactive({
@@ -428,12 +359,24 @@ tlc_denoisingServer <- function(input,output,session){
   },height=800)
 
   output$downloadPicture <- downloadHandler(
-    filename = function() {
-      paste(input$FilePicture$name,"processed.jpeg", sep = "_")
-    },
+    filename = 'tlc_denoising.zip',
     content = function(file) {
-      writeJPEG(data.process(),target=file)
-    }
+      fs <- c()
+      path <- paste0('recon.jpeg')
+      fs <- c(fs,path)
+      writeJPEG(data.process(),target=path)
+      #data.up.recon()[,,input$raster_hidden_select]
+      for(i in seq(dim(data.up.recon())[3])){
+        path <- paste0("hidden_",i,'.jpeg')
+        fs <- c(fs,path)
+        writeJPEG(data.up.recon()[,,i] ,target=path)
+      }
+
+      tempFile <- tempfile(fileext = ".zip")
+      zip(zipfile=tempFile, files=fs)
+      file.rename(tempFile, file)
+    },
+    contentType = "application/zip"
   )
   output$model.plot.1 <- renderPlot({
     par(mfrow=c(1,2))

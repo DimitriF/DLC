@@ -2,8 +2,9 @@
 ##'
 ##' @param data an array as returned by the function f.eat.image
 ##' @param channel numeric for the channel to use (1 for red, 2 for green and 3 for blue)
-##' @param correct.baseline use or not the rolling ball algorithm to correct the baseline
 ##' @param negatif apply a transformation to put the data in negatif, needed for white light pictures and for some extracted featuress from the network
+##' @param correct.baseline use or not the rolling ball algorithm to correct the baseline
+##' @param align boolean, use or not ptw to align the peak to the first sample
 ##' @param start starting pixel index
 ##' @param end stopping pixel index
 ##' @param wm Width of local window for minimization/maximization
@@ -18,14 +19,17 @@
 
 # data <- f.read.image("inst/extdata/rTLC_demopicture.JPG",256)
 # dim.table <- rbind(c(1,2,50,60,100,110),c(1,2,70,80,100,110))
-f.integrate_extracted <- function(data,channel,negatif=F,correct.baseline=F,start,end,wm=50,ws=5,plotting=F){
+f.integrate_extracted <- function(data,channel,negatif=F,correct.baseline=F,allign=F,start,end,wm=50,ws=5,plotting=F){
   if(length(start) != length(end)){
     stop("start and end do not have the same lenght")
   }
   data = data[,,channel]
-  if(negatif==T){data <- 1-data}
-  if(correct.baseline==T){
+  if(negatif){data <- 1-data}
+  if(correct.baseline){
     data = baseline(spectra = data,method = "rollingBall",wm=wm,ws=ws) %>% getCorrected()
+  }
+  if(allign){
+    data = ptw(ref = data[1,],data)$warped.sample
   }
   store = matrix(NA,nrow = nrow(data),ncol=length(start))
   for(j in seq(length(start))){

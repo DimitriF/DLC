@@ -5,7 +5,7 @@
 \title{function to integrate peaks from 3d chromato array}
 \usage{
 f.integrate_extracted(data, channel, negatif = F, correct.baseline = F,
-  start, stop)
+  allign = F, start, end, wm = 50, ws = 5, plotting = F)
 }
 \arguments{
 \item{data}{an array as returned by the function f.eat.image}
@@ -18,7 +18,15 @@ f.integrate_extracted(data, channel, negatif = F, correct.baseline = F,
 
 \item{start}{starting pixel index}
 
-\item{stop}{stopping pixel index}
+\item{end}{stopping pixel index}
+
+\item{wm}{Width of local window for minimization/maximization}
+
+\item{ws}{Width of local window for smoothing}
+
+\item{plotting}{should a plot be display to check the integration}
+
+\item{align}{boolean, use or not ptw to align the peak to the first sample}
 
 \item{...}{Arguments to be passed to methods}
 }
@@ -27,8 +35,7 @@ function to integrate peaks from 3d chromato array
 }
 \examples{
 data <- f.read.image(source='www/rTLC_demopicture.JPG',height=128)
-dim.table <- rbind(c(1,2,50,60,100,110),c(1,2,70,80,100,110))
-f.integrate(data,dim.table,F,T)
+## incoming
 }
 \author{
 Dimitri Fichou
