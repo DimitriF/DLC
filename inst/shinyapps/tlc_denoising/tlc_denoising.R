@@ -22,7 +22,9 @@ tlc_denoisingUI <- function(id){
                             numericInput(ns('numepochs'),'Number of epoch',5),
                             numericInput(ns('batchsize'),'Batchsize',1000),
                             numericInput(ns('momentum'),'Momentum',0.5),
-                            numericInput(ns('learningrate'),'Learningrate',0.1)
+                            numericInput(ns('learningrate'),'Learningrate',0.1),
+                            numericInput(ns('cd'),'Contrastive divergence',2)
+
                    ),
                    tabPanel('Links',
                             br(),
@@ -306,12 +308,13 @@ tlc_denoisingServer <- function(input,output,session){
     withProgress(message = "Training network", value=0, {
       data <- data.raw.decon()
       if(input$negative){data <- 1- data}
+      set.seed(1)
       model <- rbm.train(data,
                          hidden=input$hidden,
                          numepochs = input$numepochs,
                          batchsize = input$batchsize,
                          momentum = input$momentum,
-                         learningrate = input$learningrate,verbose = T)
+                         learningrate = input$learningrate,cd=input$cd,verbose = T)
       return(model)
     })
   })
@@ -362,6 +365,12 @@ tlc_denoisingServer <- function(input,output,session){
     filename = 'tlc_denoising.zip',
     content = function(file) {
       fs <- c()
+      if(!is.null(input$FilePicture)){
+        path <- paste0(input$FilePicture$name)
+        fs <- c(fs,path)
+        writeJPEG(data.raw(),target=path)
+      }
+
       path <- paste0('recon.jpeg')
       fs <- c(fs,path)
       writeJPEG(data.process(),target=path)
