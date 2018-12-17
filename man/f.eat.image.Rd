@@ -5,8 +5,8 @@
 \title{Function to extract chromatograms from an 3d array, or a 2d matrix}
 \usage{
 f.eat.image(data, conv = "linomat", largeur = 200, dist.gauche = 20,
-  band = 6, ecart = 2, tolerance = 1, cropping = 0, nbr.band = NULL,
-  plotting = F)
+  band = 6, ecart = 2, tolerance = 1, cropping = 0,
+  nbr.band = NULL, plotting = F)
 }
 \arguments{
 \item{data}{input array or matrix}

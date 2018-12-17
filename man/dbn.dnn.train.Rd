@@ -6,8 +6,8 @@
 \usage{
 dbn.dnn.train(x, y, hidden = c(1), activationfun = "sigm",
   learningrate = 0.8, momentum = 0.5, learningrate_scale = 1,
-  output = "sigm", numepochs = 3, batchsize = 100, hidden_dropout = 0,
-  visible_dropout = 0, cd = 1)
+  output = "sigm", numepochs = 3, batchsize = 100,
+  hidden_dropout = 0, visible_dropout = 0, cd = 1)
 }
 \arguments{
 \item{x}{matrix of x values for examples}

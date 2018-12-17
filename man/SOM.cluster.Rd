@@ -4,10 +4,11 @@
 \alias{SOM.cluster}
 \title{Function to apply a pipeline of deconstruction, learning, reconstruction on a picture}
 \usage{
-SOM.cluster(data, margin, transform = c(F), grid.x = c(3), grid.y = c(3),
-  topo = c("hexagonal"), toroidal = c(F), rlen = c(100),
-  alpha.1 = c(0.05), alpha.2 = c(0.01), radius = c("Default"),
-  action = c("reconstruct"), count.successif.1 = rep(0, length(margin)),
+SOM.cluster(data, margin, transform = c(F), grid.x = c(3),
+  grid.y = c(3), topo = c("hexagonal"), toroidal = c(F),
+  rlen = c(100), alpha.1 = c(0.05), alpha.2 = c(0.01),
+  radius = c("Default"), action = c("reconstruct"),
+  count.successif.1 = rep(0, length(margin)),
   count.successif.2 = rep(100, length(margin)), use = length(margin))
 }
 \arguments{

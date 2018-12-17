@@ -4,12 +4,14 @@
 \alias{redim.array}
 \title{Function to redimension a 3D array}
 \usage{
-redim.array(data, height.out)
+redim.array(data, height.out, width.out = NULL)
 }
 \arguments{
 \item{data}{3D array}
 
 \item{height.out}{number of pixel in height (first dimension of the 3D array)}
+
+\item{width.out}{number of pixel in width, optionnal, if not specified will be infered from the height and array dimension (second dimension of the 3D array)}
 }
 \description{
 Function to redimension a 3D array

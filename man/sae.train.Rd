@@ -4,10 +4,10 @@
 \alias{sae.train}
 \title{Training a Stacked Autoencoder}
 \usage{
-sae.train(x, hidden = c(10), activationfun = "sigm", learningrate = 0.8,
-  momentum = 0.5, learningrate_scale = 1, output = "sigm",
-  numepochs = 3, batchsize = 100, hidden_dropout = 0,
-  visible_dropout = 0.2)
+sae.train(x, hidden = c(10), activationfun = "sigm",
+  learningrate = 0.8, momentum = 0.5, learningrate_scale = 1,
+  output = "sigm", numepochs = 3, batchsize = 100,
+  hidden_dropout = 0, visible_dropout = 0.2)
 }
 \arguments{
 \item{x}{matrix of x values for examples}

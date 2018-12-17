@@ -4,7 +4,7 @@
 \alias{raster}
 \title{function to plot an image}
 \usage{
-raster(data, main = "", Title.dim = F, interpolate = F, respect = F,
+raster(data, main = "", Title.dim = F, interpolate = F, inv = F,
   ...)
 }
 \arguments{
@@ -14,7 +14,7 @@ raster(data, main = "", Title.dim = F, interpolate = F, respect = F,
 
 \item{Title.dim}{should the dimension be indicated on the plot}
 
-\item{respect}{will adjust the number of pixel depending of the image dimension and plotting region.}
+\item{inv}{set pixel 0,0 in top left as it should be, usefull for interactive plot.}
 
 \item{...}{Arguments to be passed to methods}
 }

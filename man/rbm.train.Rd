@@ -4,10 +4,10 @@
 \alias{rbm.train}
 \title{Training a RBM(restricted Boltzmann Machine)}
 \usage{
-rbm.train(x, hidden, numepochs = 3, batchsize = 100, learningrate = 0.8,
-  learningrate_scale = 1, momentum = 0.5, visible_type = "bin",
-  hidden_type = "bin", cd = 1, verbose = F, keep.data = F,
-  model = NULL)
+rbm.train(x, hidden, numepochs = 3, batchsize = 100,
+  learningrate = 0.8, learningrate_scale = 1, momentum = 0.5,
+  visible_type = "bin", hidden_type = "bin", cd = 1, verbose = F,
+  keep.data = F, model = NULL)
 }
 \arguments{
 \item{x}{matrix of x values for examples}

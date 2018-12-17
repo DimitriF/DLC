@@ -4,7 +4,8 @@
 \alias{SOM.cluster.plot.evolve}
 \title{Function to plot the evolution of a picture}
 \usage{
-SOM.cluster.plot.evolve(data, Normalize = F, grid = c(3, 3), main = "")
+SOM.cluster.plot.evolve(data, Normalize = F, grid = c(3, 3),
+  main = "")
 }
 \arguments{
 \item{data}{one list return by SOM.sluster}

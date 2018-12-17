@@ -4,8 +4,8 @@
 \alias{SOM.cluster.plot}
 \title{Function to plot an object return by the SOM.cluster function}
 \usage{
-SOM.cluster.plot(data, xcoord = NULL, ycoord = NULL, index.original = 1,
-  index.recon = 1)
+SOM.cluster.plot(data, xcoord = NULL, ycoord = NULL,
+  index.original = 1, index.recon = 1)
 }
 \arguments{
 \item{data}{list return by the SOM.cluster function}
