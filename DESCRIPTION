@@ -9,6 +9,7 @@ Description: This package provide tool to explore HPTLC picture with artificial
     intelligence with a focus on unsupervised learning.
 License: GPL
 Depends: jpeg, png, tiff, abind, shiny, shinydashboard, magrittr, kohonen, plyr, markdown,
-  ChemometricsWithR, RSNNS, tsne, baseline
+  RSNNS, tsne, baseline
+Suggests: ChemometricsWithR
 LazyData: TRUE
 RoxygenNote: 6.1.1
